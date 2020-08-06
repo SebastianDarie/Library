@@ -28,28 +28,28 @@
             </div>
 
             <div class="modal-body">
-                <form> 
+                <form class="form"> 
                     <div class="fields">
                         <div>
                             <label for="title">Title</label>
-                            <input class="field" type="text" name="title" required autofocus>
+                            <input placeholder="Title" class="field" type="text" name="title" required autofocus>
                         </div>
                         <div>
                             <label for="author">Author</label>
-                            <input class="field" type="text" name="author" required>
+                            <input placeholder="Author" class="field" type="text" name="author" required>
                         </div>
                         <div>
                             <label for="pages">Pages</label>
-                            <input class="field" type="number" min="0" name="pages">
+                            <input placeholder="Pages" class="field" type="number" min="0" name="pages">
                         </div>
                       </div>
 
                       <div class="read">
                         <p>I have read this book</p>
-                        <input id="checkbox" type="checkbox" name="read">
+                        <input type="radio" name="read">
                       </div>
 
-                      <button type="submit" class="submit">Submit</button>
+                      <button class="submit" type="submit">Submit</button>
                 </form>
             </div>
             

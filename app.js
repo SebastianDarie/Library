@@ -20,53 +20,114 @@ function outsideClick(e) {
   }
 }
 
-let library = [
-    {title: 'In Search of Lost Time', author: 'Marcel Proust', pages: '4,215', read: false}, 
-    {title: 'Ulysses', author: 'James Joyce', pages: '730', read: false},
-    {title: 'Don Quixote', author: 'Miguel de Cervantes', pages: '863', read: false},
-    {title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', pages: '218', read: false},
-    {title: 'War and Peace', author: 'Leo Tolstoy', pages: '1,225 ', read: false}
-]
+let library = []
 
 const cards = document.querySelector('.cards')
+const form = document.querySelector('.form')
 
-class Book {
-    constructor(title, author, pages, read) {
-        this.title = title
-        this.author = author
-        this.pages = pages
-        this.read = read
-    }
+loadFromLocalStorage()
+
+function Book (title, author, pages, read) {
+    this.title = title
+    this.author = author
+    this.pages = pages
+    this.read = read
 }
 
-function addBook() {
+function addBook(title, author, pages, read) {
+    let book = new Book(title, author, pages, read)
 
+    if(inLibrary(book)) return
+
+    library.push(book)
+
+    render()
 }
 
 function render() {
     cards.innerHTML = ''
 
+    saveToLocalStorage()
+
     library.forEach((book, idx) => {
-        cards.innerHTML += `
-        <div class="card" data-key=${idx}>
-        <header>
-            <h2>${book.title}</h2>
-        </header>    
-        <h4>by ${book.author}</h4>
-        <p> Number of Pages: ${book.pages} </p>
-        <div class="custom-switch">
-            <input type="checkbox" class="toggle" checked>
-            <label for="read">I have read this book</label>
-        </div>
-        <span class="delete" onClick="deleteBook(${idx})"><i class="fas fa-trash"></i></span> 
-        </div>
-        `
+        if(book.read) {
+            cards.innerHTML += `
+            <div class="card" data-key=${idx}>
+            <header>
+                <h2>${book.title}</h2>
+            </header>    
+            <h4>by ${book.author}</h4>
+            <p> Number of Pages: ${book.pages} </p>
+            <div class="custom-switch">
+                <input type="checkbox" class="toggle" checked onClick="changeRead(${idx})">
+                <label class="read-label" for="read">I have read this book</label>
+            </div>
+            <span class="delete" onClick="deleteBook(${idx})"><i class="fas fa-trash"></i></span> 
+            </div>
+            `
+        } else {
+            cards.innerHTML += `
+            <div class="card" data-key=${idx}>
+            <header>
+                <h2>${book.title}</h2>
+            </header>    
+            <h4>by ${book.author}</h4>
+            <p> Number of Pages: ${book.pages} </p>
+            <div class="custom-switch">
+                <input type="checkbox" class="toggle" onClick="changeRead(${idx})">
+                <label class="read-label" for="read">I have read this book</label>
+            </div>
+            <span class="delete" onClick="deleteBook(${idx})"><i class="fas fa-trash"></i></span> 
+            </div>
+            `
+        }
     })
+}
+
+function changeRead(idx) {
+    library[idx].read ? library[idx].read = false : library[idx].read = true
+    render()
 }
 
 function deleteBook(idx) {
     library.splice(idx, 1)
     render()
 }
+
+function inLibrary(book) {
+    return library.some(libraryBook => {
+        if(libraryBook.title === book.title && libraryBook.author === book.author) return true
+    }) 
+}
+
+function saveToLocalStorage() {
+    localStorage.setItem('library', JSON.stringify(library))
+}
+
+function loadFromLocalStorage() {
+    let localLibrary = JSON.parse(localStorage.getItem('library'))
+
+    if(localLibrary === undefined || localLibrary === null || localLibrary.length === 0) {
+        addBook('The Great Gatsby', 'F. Scott Fitzgerald', 218, false)
+        localStorage.setItem('library', JSON.stringify(library))
+    } else {
+        library = localLibrary
+        render()
+    }
+}
+
+form.addEventListener('submit', function(e) {
+    const title = this.elements['title'].value
+    const author = this.elements['author'].value
+    const pages = this.elements['pages'].value
+    const read = this.elements['read'].checked
+
+    addBook(title, author, pages, read)
+
+    form.reset()
+    modal.style.display = 'none'
+
+    e.preventDefault()
+})
 
 render()
