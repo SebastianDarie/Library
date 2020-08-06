@@ -13,12 +13,16 @@
 body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: top;
     align-items: center;
     height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #eaffd0;
 }
 
 img {
+    margin-top: 20px;
     max-width: 125px;
     max-height: 125px;
 }
@@ -32,6 +36,10 @@ h1:hover {
     background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
     background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.add-book {
+    margin-bottom: 100px;
 }
 
 .button {
@@ -136,5 +144,86 @@ form {
     border: 0;
     border-radius: 10px;
     cursor: pointer;
-    
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 75px; 
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding: 20px;
+    background-color: #fce38a;
+    margin-top: -20px;
+    margin-bottom: 25px;
+}
+
+.custom-switch {
+    margin: 10px;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:focus {
+    outline: 0;
+}
+  
+.toggle {
+    height: 32px;
+    width: 52px;
+    border-radius: 16px;
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    border: 2px solid #ff2800;
+    background: #ff2800;
+    transition: all 0.2s ease;
+}
+
+.toggle:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 2px rgba(44, 44, 44, 0.2);
+    transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
+}
+
+.toggle:checked {
+    border-color: #009a4e;
+    background: #009a4e;
+}
+
+.toggle:checked:after {
+    transform: translatex(20px);
+}
+
+label {
+    margin-right: 10px;
+    margin-top: 3px;
+    margin-left: -10px;
+    float: left;
+}
+
+.delete {
+    cursor: pointer;
+}
+
+.delete:hover {
+    color: #ff2800;
 }
